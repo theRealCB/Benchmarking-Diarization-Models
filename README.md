@@ -54,30 +54,6 @@ We evaluated five diarization systems across 196.6 hours of multilingual audio. 
 
 For full analysis, see the [thesis](https://arxiv.org/abs/2509.26177.pdf).
 
-## Project Structure
-
-```
-.
-├── src/
-│   ├── data_structures.py    # Shared dataclasses (AudioDataItem, DiarizationResponse, etc.)
-│   ├── data_loader.py        # Audio discovery and ground truth loading
-│   ├── model_loader.py       # Lazy model imports (one per conda environment)
-│   ├── gen.py                # Unified prediction generation script
-│   └── eval.py               # Unified evaluation script
-├── requirements/
-│   ├── requirements_pyannote.txt
-│   ├── requirements_nemo.txt
-│   ├── requirements_diarizen.txt
-│   └── requirements_pyannoteai.txt
-├── environments/
-│   ├── environment_pyannote.yml
-│   ├── environment_nemo.yml
-│   ├── environment_diarizen.yml
-│   └── environment_pyannoteai.yml
-├── config.yaml               # Dataset paths, model settings, evaluation parameters
-├── run_pipeline.sh           # Shell orchestrator for conda environments
-└── README.md
-```
 
 ### Architecture Overview
 
