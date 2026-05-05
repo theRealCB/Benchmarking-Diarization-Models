@@ -2,18 +2,18 @@
 
 An open-source evaluation platform for comparing speaker diarization systems out-of-the-box, across multiple datasets, languages, and acoustic conditions.
 
-This repository accompanies the bachelor's thesis *"Benchmarking Diarization Models"* (ETH Zürich, Distributed Computing Group, 2025) and provides a unified pipeline to **generate predictions** and **evaluate performance** for any speaker diarization model — without parameter tuning or domain-specific modifications.
+This repository accompanies the bachelor's thesis *"Benchmarking Diarization Models"* (ETH Zürich, Distributed Computing Group, 2025) and provides a unified pipeline to **generate predictions** and **evaluate performance** for any speaker diarization model, without parameter tuning or domain-specific modifications.
 
 ## Why This Project?
 
-Speaker diarization — answering *"who spoke when"* — is a critical preprocessing step for meeting transcription, call analytics, and speech recognition. While many diarization models exist, comparing them fairly is difficult: different papers use different datasets, metrics, evaluation collars, and post-processing steps.
+Speaker diarization (answering *"who spoke when"*) is a critical preprocessing step for meeting transcription, call analytics, and speech recognition. While many diarization models exist, comparing them fairly is difficult: different papers use different datasets, metrics, evaluation collars, and post-processing steps.
 
 This platform solves that by providing:
 
 - **Standardized evaluation** across four datasets and five languages
-- **Out-of-the-box testing** — models are evaluated as a practitioner would deploy them
-- **Modular architecture** — add new models or datasets with minimal code changes
-- **Reproducible results** — all predictions saved as JSON for inspection and re-evaluation
+- **Out-of-the-box testing**: models are evaluated as a practitioner would deploy them
+- **Modular architecture**: add new models or datasets with minimal code changes
+- **Reproducible results**: all predictions saved as JSON for inspection and re-evaluation
 
 ## Results
 
@@ -49,7 +49,7 @@ We evaluated five diarization systems across 196.6 hours of multilingual audio. 
 
 **Key findings:**
 - Missed speech is the dominant error mode across all specialized models
-- No single model wins across all languages — model choice depends on deployment scenario
+- No single model wins across all languages. Model choice depends on deployment scenario
 - Sortformer v2 achieves exceptional computational efficiency (214.3x real-time) while maintaining competitive accuracy
 
 For full analysis, see the [thesis](https://arxiv.org/abs/2509.26177.pdf).
@@ -75,11 +75,11 @@ The pipeline is designed around **dependency isolation**: each diarization model
               └────────────┘ └────────────┘
 ```
 
-- **`data_structures.py`** — All shared types. Every component converts to/from these formats.
-- **`data_loader.py`** — Discovers audio files and loads ground truth. Uses only standard library + `librosa`. No model-specific imports.
-- **`model_loader.py`** — Each model's imports happen inside its method, so `gen.py` runs in any conda environment without import errors.
-- **`gen.py`** — Loads audio via `DataLoader`, loads a model via `ModelLoader`, runs inference, saves predictions as JSON.
-- **`eval.py`** — Loads saved predictions + ground truth, computes DER/JER via `pyannote.metrics`, generates reports.
+- **`data_structures.py`**: All shared types. Every component converts to/from these formats.
+- **`data_loader.py`**: Discovers audio files and loads ground truth. Uses only standard library + `librosa`. No model-specific imports.
+- **`model_loader.py`**: Each model's imports happen inside its method, so `gen.py` runs in any conda environment without import errors.
+- **`gen.py`**: Loads audio via `DataLoader`, loads a model via `ModelLoader`, runs inference, saves predictions as JSON.
+- **`eval.py`**: Loads saved predictions + ground truth, computes DER/JER via `pyannote.metrics`, generates reports.
 
 ## How to Use
 
@@ -110,10 +110,10 @@ pip install -r requirements/requirements_pyannoteai.txt
 ```
 
 For model-specific setup details, refer to the official documentation:
-- [pyannote.audio](https://github.com/pyannote/pyannote-audio) — requires a [HuggingFace token](https://huggingface.co/settings/tokens) with access to [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)
-- [NeMo Sortformer](https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2) — available via the [NVIDIA NeMo toolkit](https://github.com/NVIDIA/NeMo)
-- [DiariZen](https://huggingface.co/BUT-FIT/diarizen-wavlm-large-s80-md) — from [BUTSpeechFIT/DiariZen](https://github.com/BUTSpeechFIT/DiariZen)
-- [PyannoteAI](https://www.pyannote.ai) — commercial API, requires an API key
+- [pyannote.audio](https://github.com/pyannote/pyannote-audio): requires a [HuggingFace token](https://huggingface.co/settings/tokens) with access to [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1)
+- [NeMo Sortformer](https://huggingface.co/nvidia/diar_streaming_sortformer_4spk-v2): available via the [NVIDIA NeMo toolkit](https://github.com/NVIDIA/NeMo)
+- [DiariZen](https://huggingface.co/BUT-FIT/diarizen-wavlm-large-s80-md): from [BUTSpeechFIT/DiariZen](https://github.com/BUTSpeechFIT/DiariZen)
+- [PyannoteAI](https://www.pyannote.ai): commercial API, requires an API key
 
 ### 2. Configure `config.yaml`
 
@@ -152,7 +152,7 @@ processing:
   batch_size: 1
 ```
 
-API keys are read from environment variables — never stored in config:
+API keys are read from environment variables (never stored in config):
 
 ```bash
 export HF_TOKEN="your_huggingface_token"
@@ -218,7 +218,7 @@ Evaluation reports (per-file JSON metrics and text summaries) are saved to `{eva
 
 ### Adding a New Model
 
-**1. Add the model to `model_loader.py`** — create a new lazy-import method:
+**1. Add the model to `model_loader.py`** to create a new lazy-import method:
 
 ```python
 # In model_loader.py
@@ -243,7 +243,7 @@ def _load_your_model(self) -> Any:
         raise ImportError(f"your_model not available. Error: {e}")
 ```
 
-**2. Add a processing function in `gen.py`** — convert the model's output to `DiarizationResponse`:
+**2. Add a processing function in `gen.py`** to convert the model's output to `DiarizationResponse`:
 
 ```python
 # In gen.py
@@ -301,7 +301,7 @@ models:
     device: "cuda"
 ```
 
-No changes to `eval.py` are needed — evaluation works on prediction JSON files regardless of the model that produced them.
+No changes to `eval.py` are needed: evaluation works on prediction JSON files regardless of the model that produced them.
 
 ### Adding a New Dataset
 
@@ -364,7 +364,7 @@ def _load_your_dataset_audio(self, model_dir=None, override=False) -> AudioDataB
 
 ```python
 def _load_your_dataset_gt(self, audio_id: str, split: str) -> GroundTruthAnnotation:
-    """Load ground truth — adapt to your GT format (RTTM, JSON, TextGrid, etc.)."""
+    """Load ground truth, adapt to your GT format (RTTM, JSON, TextGrid, etc.)."""
     gt_path = Path(self.dataset_paths["your_dataset"]) / split / "gt" / f"{audio_id}.rttm"
 
     segments = []
@@ -427,8 +427,8 @@ If you use this platform in your research, please cite:
 
 ## Contact
 
-- **Cesare Blaser** — [ceblaser@student.ethz.ch](mailto:cesablaser@gmail.com)
-- Distributed Computing Group, ETH Zürich — [dcg.ethz.ch](https://disco.ethz.ch)
+- **Cesare Blaser**: [ceblaser@student.ethz.ch](mailto:cesablaser@gmail.com)
+- Distributed Computing Group, ETH Zürich: [dcg.ethz.ch](https://disco.ethz.ch)
 
 ## License
 
